@@ -25,7 +25,6 @@
         <div class="login-container">
             <div class="login-card liquid-glass">
                 <h2 class="login-title">Zaloguj sie</h2>
-				<center><h6>Aby uzyskac dostep napisz na dc ok_ej</h6></center><br>
                 <form id="login-form">
                     <div class="input-group">
                         <input type="text" id="username" placeholder="Login" required>
@@ -37,9 +36,12 @@
                     </div>
                     <div id="error-message" class="error-message"></div>
                     <button type="submit" class="login-button">
-                        <span>Zatwierdz i zaloguj</span>
+                        <span>Zaloguj sie</span>
                         <div class="button-glow"></div>
                     </button>
+                    <div class="admin-link">
+                        <a href="admin.html">Panel administratora</a>
+                    </div>
                 </form>
             </div>
         </div>
@@ -50,22 +52,23 @@
             window.location.href = 'index.html';
         });
 
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
             
-            if (username === 'zym' && password === 'zym123!') {
+            if (await authSystem.verifyUser(username, password)) {
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('username', username);
                 window.location.href = 'movies.html';
             } else {
-                errorMessage.textContent = 'Dane logowania sa nieprawidlowe';
+                errorMessage.textContent = 'Login lub haslo jest niepoprawne';
                 errorMessage.classList.add('show');
             }
         });
     </script>
+    <script src="auth.js"></script>
 </body>
 </html>

@@ -16,6 +16,8 @@ let isDragging = false;
 
 // Inicjalizacja odtwarzacza
 document.addEventListener('DOMContentLoaded', () => {
+    showVideoLoading();
+    
     video = document.getElementById('video-player');
     playerOverlay = document.getElementById('player-overlay');
     playerControls = document.getElementById('player-controls');
@@ -30,9 +32,33 @@ document.addEventListener('DOMContentLoaded', () => {
         video.currentTime = progress.currentTime;
     }
     
+    // Ukryj loading gdy video się załaduje
+    video.addEventListener('loadeddata', hideVideoLoading);
+    video.addEventListener('canplay', hideVideoLoading);
+    
     setupVideoControls();
     showControls();
 });
+
+function showVideoLoading() {
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'video-loading';
+    loadingOverlay.className = 'loading-overlay';
+    loadingOverlay.innerHTML = `
+        <div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Ładowanie wideo...</div>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
+}
+
+function hideVideoLoading() {
+    const loadingOverlay = document.getElementById('video-loading');
+    if (loadingOverlay) {
+        loadingOverlay.remove();
+    }
+}
 
 function setupVideoControls() {
     const playPauseBtn = document.getElementById('play-pause-btn');

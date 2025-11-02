@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zymvod - Panel Administratora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="animated-background"></div>
+    
+    <nav class="glass-nav liquid-glass">
+        <div class="nav-content">
+            <div class="logo">
+                <span class="logo-text">zymvod admin</span>
+            </div>
+            <button id="logout-admin-btn" class="nav-button">Wyloguj</button>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div id="admin-login" class="login-section">
+        <div class="login-container">
+            <div class="login-card liquid-glass">
+                <h2 class="login-title">Panel Administratora</h2>
+                <form id="admin-login-form">
+                    <div class="input-group">
+                        <input type="text" id="admin-username" placeholder="Login administratora" required>
+                        <div class="input-glow"></div>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="admin-password" placeholder="Hasło administratora" required>
+                        <div class="input-glow"></div>
+                    </div>
+                    <div id="admin-error-message" class="error-message"></div>
+                    <button type="submit" class="login-button">
+                        <span>Zaloguj do panelu</span>
+                        <div class="button-glow"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <main id="admin-panel" class="admin-section" style="display: none;">
+        <div class="admin-header">
+            <h1 class="admin-title">Panel Administratora</h1>
+        </div>
+        
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="movies">Filmy</button>
+            <button class="admin-tab" data-tab="users">Użytkownicy</button>
+            <button class="admin-tab" data-tab="admins">Administratorzy</button>
+        </div>
+        
+        <!-- Movies Tab -->
+        <div id="movies-tab" class="admin-content">
+            <h3 style="color: white; margin-bottom: 20px;">Zarządzanie filmami</h3>
+            
+            <form id="movie-form" class="admin-form">
+                <input type="hidden" id="movie-id">
+                <div class="admin-form-row">
+                    <input type="text" id="movie-title" class="admin-input" placeholder="Tytuł filmu" required>
+                    <input type="text" id="movie-description" class="admin-input" placeholder="Opis filmu" required>
+                </div>
+                <div class="admin-form-row">
+                    <input type="url" id="movie-thumbnail" class="admin-input" placeholder="URL miniaturki" required>
+                    <input type="url" id="movie-video-url" class="admin-input" placeholder="URL wideo" required>
+                </div>
+                <div class="admin-form-row">
+                    <input type="number" id="movie-duration" class="admin-input" placeholder="Czas trwania (sekundy)" required>
+                    <select id="movie-genre" class="admin-input" required>
+                        <option value="">Wybierz gatunek</option>
+                        <option value="Akcja">Akcja</option>
+                        <option value="Dramat">Dramat</option>
+                        <option value="Komedia">Komedia</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Thriller">Thriller</option>
+                    </select>
+                </div>
+                <div class="admin-form-row">
+                    <input type="number" id="movie-year" class="admin-input" placeholder="Rok produkcji" required>
+                    <input type="number" id="movie-rating" class="admin-input" placeholder="Ocena (1-10)" min="1" max="10" required>
+                </div>
+                <div class="admin-form-row">
+                    <label style="color: white; display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="movie-featured"> Polecany
+                    </label>
+                    <label style="color: white; display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="movie-new"> Nowość
+                    </label>
+                    <label style="color: white; display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="movie-trending"> Na topie
+                    </label>
+                </div>
+                <button type="submit" class="admin-button">Zapisz film</button>
+                <button type="button" id="clear-movie-form" class="admin-button" style="background: #666;">Wyczyść</button>
+            </form>
+            
+            <div id="movies-list" class="admin-list">
+                <!-- Movies will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Users Tab -->
+        <div id="users-tab" class="admin-content" style="display: none;">
+            <h3 style="color: white; margin-bottom: 20px;">Zarządzanie użytkownikami</h3>
+            
+            <form id="user-form" class="admin-form">
+                <div class="admin-form-row">
+                    <input type="text" id="user-username" class="admin-input" placeholder="Nazwa użytkownika" required>
+                    <input type="password" id="user-password" class="admin-input" placeholder="Hasło" required>
+                </div>
+                <button type="submit" class="admin-button">Dodaj użytkownika</button>
+            </form>
+            
+            <div id="users-list" class="admin-list">
+                <!-- Users will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Admins Tab -->
+        <div id="admins-tab" class="admin-content" style="display: none;">
+            <h3 style="color: white; margin-bottom: 20px;">Zarządzanie administratorami</h3>
+            
+            <form id="admin-form" class="admin-form">
+                <div class="admin-form-row">
+                    <input type="text" id="admin-username-input" class="admin-input" placeholder="Nazwa administratora" required>
+                    <input type="password" id="admin-password-input" class="admin-input" placeholder="Hasło" required>
+                </div>
+                <button type="submit" class="admin-button">Dodaj administratora</button>
+            </form>
+            
+            <div id="admins-list" class="admin-list">
+                <!-- Admins will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

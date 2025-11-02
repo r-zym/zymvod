@@ -73,7 +73,8 @@ function loadContinueWatching() {
     const continueContainer = document.getElementById('continue-watching');
     const moviesToContinue = movies.filter(movie => {
         const progress = watchProgress[movie.id];
-        return progress && progress.currentTime > 30 && progress.currentTime < progress.duration - 30;
+        const progressPercent = progress ? (progress.currentTime / progress.duration) * 100 : 0;
+        return progress && progress.currentTime > 30 && progressPercent < 95;
     });
     
     if (moviesToContinue.length === 0) {
@@ -116,8 +117,9 @@ function loadMoviesGrid(filter = 'all') {
         movieCard.className = 'movie-card liquid-glass';
         
         const progress = watchProgress[movie.id];
-        const continueWatching = progress && progress.currentTime > 30 ? 
-            `<div class="continue-watching">Obejrzane ${Math.round((progress.currentTime / progress.duration) * 100)}%</div>` : '';
+        const progressPercent = progress ? Math.round((progress.currentTime / progress.duration) * 100) : 0;
+        const continueWatching = progress && progress.currentTime > 30 && progressPercent < 95 ? 
+            `<div class="continue-watching">Obejrzane ${progressPercent}%</div>` : '';
         
         const newBadge = movie.new ? '<div class="new-badge">NOWOSC</div>' : '';
         const trendingBadge = movie.trending && !movie.new ? '<div class="trending-badge">NA TOPIE</div>' : '';
@@ -157,8 +159,21 @@ function setupFilters() {
 }
 
 function playMovie(movie) {
+    showLoading();
     localStorage.setItem('currentMovie', JSON.stringify(movie));
     window.location.href = 'player.html';
+}
+
+function showLoading() {
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-overlay';
+    loadingOverlay.innerHTML = `
+        <div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Ładowanie filmu...</div>
+        </div>
+    `;
+    document.body.appendChild(loadingOverlay);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
